@@ -4,41 +4,20 @@ const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
     GatewayIntentBits.GuildMessages,
-    GatewayIntentBits.MessageContent,
-    GatewayIntentBits.GuildVoiceStates
+    GatewayIntentBits.MessageContent
   ]
 });
 
-const PREFIX = "m!";
-
-client.on("ready", () => {
-  console.log("Bot is online");
+client.once("ready", () => {
+  console.log(`✅ Logged in as ${client.user.tag}`);
 });
 
-client.on("messageCreate", async (message) => {
+client.on("messageCreate", (message) => {
   if (message.author.bot) return;
-  if (!message.content.startsWith(PREFIX)) return;
 
-  const args = message.content.slice(PREFIX.length).trim().split(/ +/);
-  const command = args.shift().toLowerCase();
-
-  if (command === "play") {
-    const query = args.join(" ");
-    if (!query) return message.reply("❌ ใส่ลิงก์หรือชื่อเพลงด้วย");
-    return message.reply(`🎵 กำลังจะเปิดเพลง: ${query}`);
-  }
-
-  if (command === "skip") {
-    return message.reply("⏭️ ข้ามเพลงแล้ว");
-  }
-
-  if (command === "leave") {
-    return message.reply("👋 ออกจากห้องเสียงแล้ว");
-  }
-
-  if (command === "setup") {
-    return message.reply("⚙️ ระบบตั้งค่า (ยังไม่เปิด)");
+  if (message.content === "ping") {
+    message.reply("pong 🏓");
   }
 });
 
-client.login(process.env.DISCORD_TOKEN);
+client.login(process.env.TOKEN);
